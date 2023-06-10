@@ -6,11 +6,19 @@ import heartImg from "../../images/heart.png";
 export default function UserMain() {
   const [heartCapacity, setHeartCapacity] = useState(1);
   const [heartSize, setHeartSize] = useState(10);
+  const [bodyRootSize, setBodyRootSize] = useState(100);
 
   const increaseHeartCapacity = () => setHeartCapacity(heartCapacity + 1);
+  const bodyRoot = document.getElementById('root');
+  bodyRoot.style.zoom = `${bodyRootSize}%`;
 
   useEffect(() => {
     setHeartSize(heartSize + 10);
+
+    if (heartSize > 20) {
+      setBodyRootSize(bodyRootSize - 10)
+      bodyRoot.style.zoom = `${bodyRootSize}%`;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [heartCapacity]);
 
@@ -37,7 +45,7 @@ export default function UserMain() {
           <FavoriteBorderIcon />
         </IconButton>
       </Button>
-      <img src={heartImg} alt="heart" style={{ width: `${heartSize}%` }} />
+      <img src={heartImg} alt="heart" style={{ width: `${heartSize}%`, maxWidth: '100%' }} />
     </Stack>
   );
 }
