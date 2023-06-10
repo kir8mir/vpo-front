@@ -10,7 +10,8 @@ To create donation:
 - Request: POST
 - Endpoint: /donation
 - Body:
-```{
+```
+{
   "name": "Name",
   "title": "Title",
   "description": "Desc",
@@ -40,9 +41,11 @@ To make donation:
 - Request: PATCH
 - Endpoint: /donation/id
 - Body:
+```
 {
   "value": 100
 }
+```
 
 To remove donation:
 - Request: DELETE
