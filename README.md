@@ -17,7 +17,8 @@ To create donation:
   "amount": 1000,
   "status": "pending",
   "value": 0
-}```
+}
+```
 
 To set status from pending to active:
 - Request: POST
