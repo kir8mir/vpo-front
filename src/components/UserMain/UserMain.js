@@ -2,6 +2,7 @@ import { Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import heartImg from "../../images/heart.png";
+import DonationList from "../DonationList/DonationList";
 
 export default function UserMain() {
   const [heartCapacity, setHeartCapacity] = useState(1);
@@ -9,14 +10,14 @@ export default function UserMain() {
   const [bodyRootSize, setBodyRootSize] = useState(100);
 
   const increaseHeartCapacity = () => setHeartCapacity(heartCapacity + 1);
-  const bodyRoot = document.getElementById('root');
+  const bodyRoot = document.getElementById("root");
   bodyRoot.style.zoom = `${bodyRootSize}%`;
 
   useEffect(() => {
     setHeartSize(heartSize + 10);
 
     if (heartSize > 20) {
-      setBodyRootSize(bodyRootSize - 10)
+      setBodyRootSize(bodyRootSize - 10);
       bodyRoot.style.zoom = `${bodyRootSize}%`;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,7 +31,7 @@ export default function UserMain() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        gap: '20px'
+        gap: "20px",
       }}
     >
       <Typography variant="h3">
@@ -41,11 +42,16 @@ export default function UserMain() {
       </Typography>
       <Button variant="contained" onClick={increaseHeartCapacity}>
         Click Me
-        <IconButton >
+        <IconButton>
           <FavoriteBorderIcon />
         </IconButton>
       </Button>
-      <img src={heartImg} alt="heart" style={{ width: `${heartSize}%`, maxWidth: '100%' }} />
+      <img
+        src={heartImg}
+        alt="heart"
+        style={{ width: `${heartSize}%`, maxWidth: "100%" }}
+      />
+      <DonationList />
     </Stack>
   );
 }
