@@ -16,6 +16,7 @@ export default function DonationForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     createDonation(formValues);
+    setIsFormVisible(false)
   };
 
   const doUpdateField = (e) => {
