@@ -25,7 +25,6 @@ export default function DontaionCellRenderer( params ) {
   const handleClose = () => setOpen(false);
   const donationInput = useRef();
   const id = params.valueFormatted ? params.valueFormatted : params.value;
-
   const donationCallback = () => {
       makeDonation(id, {value: parseInt(donationInput.current.value)});
       params.setUpdate(true);
@@ -46,7 +45,7 @@ export default function DontaionCellRenderer( params ) {
             </Typography>
             <TextField id="outlined-basic" label="Donation Value" variant="outlined" ref={donationInput} />
             <Button variant="outlined" onClick={donationCallback}>Donate!</Button>
-            <Button variant="outlined" onClick={() => {navigator.clipboard.writeText('LOL')}}>Copy Link</Button>
+            <Button variant="outlined" onClick={() => {navigator.clipboard.writeText(`http://localhost:3000/wannadonate/to=${id}`)}}>Copy Link</Button>
           </Box>
         </Modal>
     </Stack>
