@@ -10,6 +10,8 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 export default function DonationList() {
   const [donationList, setDonationList] = useState([]);
   const [update, setUpdate] = useState(false);
+  const handleUpdate = () => setUpdate(true);
+  const handleEndUpdate = () => setUpdate(false);
   const [activeFilter, setActiveFilter] = useState(false);
   const [columnDefs, setColumnDefs] = useState([
     {field: 'name', filter: true},
@@ -18,7 +20,7 @@ export default function DonationList() {
     {field: 'value', filter: true},
     {field: 'status', filter: true, hide: true},
     {field: 'description'},
-    {field: 'id', cellRenderer: DonationCellRenderer, cellRendererParams: {setUpdate} }
+    {field: 'custom', cellRenderer: DonationCellRenderer, cellRendererParams: {handleUpdate} }
     ]);
   const [gridApi, setGridApi] = useState(null);
   const activeFilterRef = useRef();
@@ -27,9 +29,9 @@ export default function DonationList() {
   useEffect(() => {
     (async () => {
       const donationList = await getAllDontaions();
-      setDonationList(donationList);
+      setDonationList(donationList.filter((donation) => {return donation.status !== 'pending'}));
     })();
-    setUpdate(false);
+    handleEndUpdate();
 }, [update, activeFilter]);
 
   const onGridReady = params => {
@@ -47,70 +49,22 @@ export default function DonationList() {
   }
 
   const doesExternalFilterPass = node => {
-      const active = activeFilterRef.current.value;
+      const active = activeFilterRef.current.querySelector("input").checked;
       if(active) {
-          return node.data.status = 'active';
+          return node.data.status === 'active';
       } else {
           return true;
       }
-  //     return
-    // const selSpecs = selectedSpecialitiesRef.current;
-    // const selSkills = selectedSkillsRef.current;
-    // const selPlatforms = selectedPlatformsRef.current;
-    // const selCountries = selectedCountryRef.current;
-    // const selSeniority = selectedSeniorityRef.current;
-    // let testTarget = node.data.specialities;
-    // let testTargetSkills = node.data.skills;
-    // let testTargetPlatfroms = node.data.platforms;
-    // let testTargetCountries = node.data.country;
-    // let testTargetSeniorities = node.data.seniorityLevel;
-    //
-    // let chosenCountry = 1;
-    // let chosenSeniority = 1;
-    //
-    // if(selCountries.length === 0){
-    //     chosenCountry = 0;
-    // }
-    //   if(selSeniority.length === 0){
-    //       chosenSeniority = 0;
-    //   }
-    //
-    // if(testTarget === undefined){
-    //   testTarget = '';
-    // }
-    // if(testTargetSkills === undefined){
-    //   testTargetSkills = '';
-    // }
-    // if(testTargetPlatfroms === undefined){
-    //   testTargetPlatfroms = '';
-    // }
-    // if(testTargetCountries === undefined){
-    //   testTargetCountries = '';
-    // }
-    // if(testTargetSeniorities === undefined){
-    //   testTargetSeniorities = '';
-    // }
-    //
-    // const matchedFilters = [...selSpecs.filter(s => testTarget.toLowerCase().indexOf(s.toLowerCase()) !== -1),
-    //                         ...selSkills.filter(s => testTargetSkills.toLowerCase().indexOf(s.toLowerCase()) !== -1),
-    //                         ...selPlatforms.filter(s => testTargetPlatfroms.toLowerCase().indexOf(s.toLowerCase()) !== -1),
-    //                         ...selCountries.filter(s => testTargetCountries.toLowerCase().indexOf(s.toLowerCase()) !== -1),
-    //                         ...selSeniority.filter(s => testTargetSeniorities.toLowerCase().indexOf(s.toLowerCase()) !== -1)
-    //                     ];
-    // const res = matchedFilters.length === selSpecs.length + selSkills.length + selPlatforms.length + chosenCountry + chosenSeniority;
-    //
-    // return res;
-    // return node.data.specialities.contains("Gameplay");
   }
 
   return (
       <div className="ag-theme-alpine" ref={gridWrapperRef}>
 
         <Typography variant="h6" component="h2">
-          DONATIONS
+          Збори
         </Typography>
         <FormGroup>
-            <FormControlLabel control={<Switch ref={activeFilterRef}/>} label="Only Active Donations" />
+            <FormControlLabel control={<Switch ref={activeFilterRef} onChange={handleUpdate}/>} label="Подивитися тільки активні запити на пожертвування" />
         </FormGroup>
         {donationList.length > 0 && (
             <AgGridReact

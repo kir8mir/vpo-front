@@ -9,14 +9,17 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 export default function DonationAdminList() {
   const [donationList, setDonationList] = useState([]);
+  const [update, setUpdate] = useState(false);
+  const handleUpdate = () => setUpdate(true);
+  const handleEndUpdate = () => setUpdate(false);
   const [columnDefs, setColumnDefs] = useState([
     {field: 'name', filter: true},
     {field: 'title', filter: true},
     {field: 'amount', filter: true},
+    {field: 'status', filter: true},
     {field: 'value', filter: true},
     {field: 'status', filter: true, hide: true},
-    {field: 'description'},
-    {field: 'custom', cellRenderer: DonationAdminActivateCellRenderer }
+    {field: 'custom', cellRenderer: DonationAdminActivateCellRenderer, cellRendererParams: {handleUpdate} }
     ]);
   const [gridApi, setGridApi] = useState(null);
   const gridWrapperRef = useRef();
@@ -26,7 +29,8 @@ export default function DonationAdminList() {
       const donationList = await getAllDontaions();
       setDonationList(donationList);
     })();
-  }, []);
+    handleEndUpdate();
+  }, [update]);
 
   const onGridReady = params => {
       setGridApi(params.api);
