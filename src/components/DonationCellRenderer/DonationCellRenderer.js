@@ -45,7 +45,7 @@ export default function DontaionCellRenderer( params ) {
             </Typography>
             <TextField id="outlined-basic" label="Donation Value" variant="outlined" ref={donationInput} />
             <Button variant="outlined" onClick={donationCallback}>Donate!</Button>
-            <Button variant="outlined" onClick={() => {navigator.clipboard.writeText(`http://localhost:3000/wannadonate/to=${id}`)}}>Copy Link</Button>
+            <Button variant="outlined" onClick={() => {navigator.clipboard.writeText(`http://localhost:3000/wannadonate/${id}`)}}>Copy Link</Button>
           </Box>
         </Modal>
     </Stack>
