@@ -1,0 +1,12 @@
+.ag-theme-alpine {
+    width: 100%;
+}
+.donation-cell {
+
+}
+.donation-form form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}

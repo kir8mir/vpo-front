@@ -1,4 +1,5 @@
 import { Stack, Typography } from "@mui/material";
+import DonationAdminList from "../DonationAdminList/DonationAdminList";
 
 export default function AdminMain() {
 
@@ -16,6 +17,7 @@ export default function AdminMain() {
       <Typography variant="h3">
         This is Admin Page
       </Typography>
+    <DonationAdminList />
     </Stack>
   );
 }
