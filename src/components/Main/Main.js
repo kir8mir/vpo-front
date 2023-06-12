@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import UserMain from "../UserMain/UserMain";
 import AdminMain from "../AdminMain/AdminMain";
+import DontaionCellRendererOg from "../DonationCellRendererOg/DonationCellRendererOg";
 
 let router = createBrowserRouter([
   {
@@ -16,6 +17,12 @@ let router = createBrowserRouter([
     path: "/admin",
     Component() {
       return <AdminMain />;
+    },
+  },
+  {
+    path: "/wannadonate/:id",
+    Component() {
+      return <DontaionCellRendererOg />;
     },
   },
 ]);
