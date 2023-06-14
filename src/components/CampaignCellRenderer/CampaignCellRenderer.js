@@ -147,7 +147,7 @@ export default function CampaignCellRenderer( params ) {
                         {currentDonation.status !== 'closed' && (<Button variant="outlined" onClick={donationCallback}>Задонатити</Button>)}
                         <Button variant="outlined" onClick={() => {
                           navigator.clipboard.writeText(
-                            `http://89.40.2.236:3031/wannadonate/${id}`
+                            `http://89.40.2.236:3013/wannadonate/${id}`
                           );
                       }}>Скопіювати посилання на збір</Button>
                     </>
