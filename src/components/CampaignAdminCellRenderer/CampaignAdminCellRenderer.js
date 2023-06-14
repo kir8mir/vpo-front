@@ -1,7 +1,7 @@
 import { Stack, Button, TextField, Typography, Modal, Box } from "@mui/material";
 import { useRef, useState } from "react";
-import changeDonationStatus from "../../utils/changeDonationStatus";
-import deleteDonation from "../../utils/deleteDonation";
+import changeCampaignStatus from "../../utils/changeCampaignStatus";
+import deleteCampaign from "../../utils/deleteCampaign";
 
 const style = {
   position: 'absolute',
@@ -20,26 +20,25 @@ const style = {
   textAlign: 'center'
 };
 
-export default function DonationAdminCellRenderer( params ) {
+export default function CampaignAdminCellRenderer( params ) {
   const [openDescription, setOpenDescription] = useState(false);
   const handleCloseDescription = () => setOpenDescription(false);
   const handleOpenDescription = () => setOpenDescription(true);
     const [openOptions, setOpenOptions] = useState(false);
     const handleCloseOptions = () => setOpenOptions(false);
     const handleOpenOptions = () => setOpenOptions(true);
-  const donationInput = useRef();
   const id = params.valueFormatted ? params.valueFormatted : params.data.id;
   const status = params.valueFormatted ? params.valueFormatted : params.data.status;
 
-  const donationActivateCallback = id => {
-      changeDonationStatus(id);
+  const campaignActivateCallback = id => {
+      changeCampaignStatus(id);
       setTimeout(() => {
           params.handleUpdate();
       }, 1000);
   }
 
-    const donationDeleteCallback = id => {
-        deleteDonation(id);
+    const campaignDeleteCallback = id => {
+        deleteCampaign(id);
         setTimeout(() => {
             params.handleUpdate();
         }, 1000);
@@ -56,31 +55,11 @@ export default function DonationAdminCellRenderer( params ) {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Інфо збору:
+              Опис кампанії:
             </Typography>
-
               <Typography>
-                Імʼя виконавця збору: {params.data.name}
+                {params.data.description}
               </Typography>
-              <Typography>
-                Назва: {params.data.title}
-              </Typography>
-              <Typography>
-                Дата створення: {params.data.createdAt}
-              </Typography>
-              <Typography>
-                Сума збору: {params.data.amount}UAH
-              </Typography>
-              <Typography>
-                Вже зібрано: {params.data.value}UAH
-              </Typography>
-              <Typography>
-                Статус: {params.data.status}
-              </Typography>
-
-                <Typography>
-                  Опис: {params.data.description}
-                </Typography>
             </Box>
         </Modal>
         <Modal
@@ -94,11 +73,11 @@ export default function DonationAdminCellRenderer( params ) {
               Опції:
             </Typography>
             {status === 'pending' && (
-                <Button variant="outlined" onClick={() => donationActivateCallback(id)}>Активувати збір</Button>
+                <Button variant="outlined" onClick={() => campaignActivateCallback(id)}>Активувати кампанію</Button>
             )}
-            <Button variant="outlined" onClick={handleOpenDescription}>Подивитися інфо збору</Button>
-            <Button variant="outlined" onClick={() => donationDeleteCallback(id)}>Позначити як Шахрай</Button>
-            <Button variant="outlined" onClick={() => donationDeleteCallback(id)}>Видалили збір</Button>
+            <Button variant="outlined" onClick={handleOpenDescription}>Подивитися опис кампанії</Button>
+            <Button variant="outlined" onClick={() => campaignDeleteCallback(id)}>Позначити як Шахрай</Button>
+            <Button variant="outlined" onClick={() => campaignDeleteCallback(id)}>Видалили кампанію</Button>
             </Box>
         </Modal>
     </Stack>

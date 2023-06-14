@@ -1,14 +1,14 @@
 import { Stack } from "@mui/material";
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
-import DonationAdminActivateCellRenderer from "../DonationAdminCellRenderer/DonationAdminCellRenderer";
-import getAllDontaions from "../../utils/getAllDontaions";
+import CampaignAdminCellRenderer from "../CampaignAdminCellRenderer/CampaignAdminCellRenderer";
+import getAllCampaigns from "../../utils/getAllCampaigns";
 import { useEffect, useState, useRef } from "react";
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-export default function DonationAdminList( ) {
-  const [donationList, setDonationList] = useState([]);
+export default function CampaignAdminList( ) {
+  const [campaignList, setCampaignList] = useState([]);
   const [update, setUpdate] = useState(false);
   const handleUpdate = () => setUpdate(true);
   const handleEndUpdate = () => setUpdate(false);
@@ -19,15 +19,15 @@ export default function DonationAdminList( ) {
     {field: 'status', filter: true},
     {field: 'value', filter: true},
     {field: 'status', filter: true, hide: true},
-    {field: 'custom', cellRenderer: DonationAdminActivateCellRenderer, cellRendererParams: {handleUpdate} }
+    {field: 'custom', cellRenderer: CampaignAdminCellRenderer, cellRendererParams: {handleUpdate} }
     ]);
   const [gridApi, setGridApi] = useState(null);
   const gridWrapperRef = useRef();
 
   useEffect(() => {
     (async () => {
-      const donationList = await getAllDontaions();
-      setDonationList(donationList);
+      const campaignList = await getAllCampaigns();
+      setCampaignList(campaignList);
     })();
     handleEndUpdate();
   }, [update]);
@@ -44,9 +44,9 @@ export default function DonationAdminList( ) {
 
   return (
       <div className="ag-theme-alpine" ref={gridWrapperRef}>
-          {donationList.length > 0 && (
+          {campaignList.length > 0 && (
             <AgGridReact
-                rowData={donationList}
+                rowData={campaignList}
                 onGridReady={onGridReady}
                 enableBrowserTooltips={true}
                 enableCellTextSelection={true}

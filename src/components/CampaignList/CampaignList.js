@@ -1,36 +1,38 @@
-import { Stack } from "@mui/material";
+import { Stack, FormGroup, FormControlLabel, Switch, Typography } from "@mui/material";
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
-import DonationAdminActivateCellRenderer from "../DonationAdminCellRenderer/DonationAdminCellRenderer";
-import getAllDontaions from "../../utils/getAllDontaions";
+import CampaignCellRenderer from "../CampaignCellRenderer/CampaignCellRenderer";
+import getAllCampaigns from "../../utils/getAllCampaigns";
 import { useEffect, useState, useRef } from "react";
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-export default function DonationAdminList( ) {
-  const [donationList, setDonationList] = useState([]);
+export default function CampaignList() {
+  const [campaignList, setCampaignList] = useState([]);
   const [update, setUpdate] = useState(false);
   const handleUpdate = () => setUpdate(true);
   const handleEndUpdate = () => setUpdate(false);
+  const [activeFilter, setActiveFilter] = useState(false);
   const [columnDefs, setColumnDefs] = useState([
     {field: 'name', filter: true},
     {field: 'title', filter: true},
     {field: 'amount', filter: true},
-    {field: 'status', filter: true},
     {field: 'value', filter: true},
     {field: 'status', filter: true, hide: true},
-    {field: 'custom', cellRenderer: DonationAdminActivateCellRenderer, cellRendererParams: {handleUpdate} }
+    {field: 'description'},
+    {field: 'custom', cellRenderer: CampaignCellRenderer, cellRendererParams: {handleUpdate} }
     ]);
   const [gridApi, setGridApi] = useState(null);
+  const activeFilterRef = useRef();
   const gridWrapperRef = useRef();
 
   useEffect(() => {
     (async () => {
-      const donationList = await getAllDontaions();
-      setDonationList(donationList);
+      const campaignList = await getAllCampaigns();
+      setCampaignList(campaignList.filter((campaign) => {return campaign.status !== 'pending'}));
     })();
     handleEndUpdate();
-  }, [update]);
+}, [update, activeFilter]);
 
   const onGridReady = params => {
       setGridApi(params.api);
@@ -42,17 +44,39 @@ export default function DonationAdminList( ) {
     }
   }
 
+  const isExternalFilterPresent = () => {
+    return true;
+  }
+
+  const doesExternalFilterPass = node => {
+      const active = activeFilterRef.current.querySelector("input").checked;
+      if(active) {
+          return node.data.status === 'active';
+      } else {
+          return true;
+      }
+  }
+
   return (
       <div className="ag-theme-alpine" ref={gridWrapperRef}>
-          {donationList.length > 0 && (
+
+        <Typography variant="h6" component="h2">
+          Кампанії
+        </Typography>
+        <FormGroup>
+            <FormControlLabel control={<Switch ref={activeFilterRef} onChange={handleUpdate}/>} label="Подивитися тільки активні кампанії" />
+        </FormGroup>
+        {campaignList.length > 0 && (
             <AgGridReact
-                rowData={donationList}
+                rowData={campaignList}
                 onGridReady={onGridReady}
                 enableBrowserTooltips={true}
                 enableCellTextSelection={true}
                 pagination={true}
                 paginationPageSize={10}
                 onPaginationChanged={onPaginationChange}
+                isExternalFilterPresent={isExternalFilterPresent}
+                doesExternalFilterPass={doesExternalFilterPass}
                 domLayout="autoHeight"
                 rowClass="grid-row"
                 columnDefs={columnDefs}

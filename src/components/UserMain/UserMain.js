@@ -2,6 +2,9 @@ import { Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import DonationList from "../DonationList/DonationList";
 import DonationForm from "../DonationForm/DonationForm";
+import CampaignList from "../CampaignList/CampaignList";
+import CampaignForm from "../CampaignForm/CampaignForm";
+import SearchForm from "../SearchForm/SearchForm";
 
 export default function UserMain() {
 
@@ -20,7 +23,7 @@ export default function UserMain() {
           Допоможемо ВПО разом!
       </Typography>
       <Typography >
-          Вітаємо вас на нашому благодійному веб-сервісі для організації допомоги ВПО. Тут ви можете отримати допомогу якщо вона вам потрібна, або допомогти тим, хто потребує допомоги. Кожен новий збір проходить модерацію організаторами, тому будь ласка, робіть донати тільки на активні збори. Щоб допомогти кампанії, будь ласка, звʼяжіться з організаторами обраної вами кампанії напряму. Будьте обережні, завжди перевіряйте надану вам інформацію щоб не стати жертвою шахрайства! 
+          Вітаємо вас на нашому благодійному веб-сервісі для організації допомоги ВПО. Тут ви можете отримати допомогу якщо вона вам потрібна, або допомогти тим, хто потребує допомоги. Кожен новий збір проходить модерацію організаторами, тому будь ласка, робіть донати тільки на активні збори. Щоб допомогти кампанії, будь ласка, звʼяжіться з організаторами обраної вами кампанії напряму. Будьте обережні, завжди перевіряйте надану вам інформацію щоб не стати жертвою шахрайства!
       </Typography>
     <Stack
       style={{
@@ -57,9 +60,22 @@ export default function UserMain() {
               gap: "20px",
             }}
           >
-              <DonationList />
-              <DonationForm />
+              <CampaignList />
+              <CampaignForm />
             </Stack>
+    </Stack>
+
+    <Stack
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: '20px'
+      }}
+    >
+        <SearchForm/>
     </Stack>
 </Stack>
   );

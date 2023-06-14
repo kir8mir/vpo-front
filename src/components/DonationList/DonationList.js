@@ -64,7 +64,7 @@ export default function DonationList() {
           Збори
         </Typography>
         <FormGroup>
-            <FormControlLabel control={<Switch ref={activeFilterRef} onChange={handleUpdate}/>} label="Подивитися тільки активні запити на пожертвування" />
+            <FormControlLabel control={<Switch ref={activeFilterRef} onChange={handleUpdate}/>} label="Подивитися тільки активні збори" />
         </FormGroup>
         {donationList.length > 0 && (
             <AgGridReact

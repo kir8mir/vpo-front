@@ -6,6 +6,9 @@ export default function DonationForm() {
   const [donationList, setDonationList] = useState([]);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
+  const [openForm, setOpenForm] = useState(false);
+  const handleCloseForm = () => setOpenForm(false);
+  const handleOpenForm = () => setOpenForm(true);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
@@ -58,54 +61,59 @@ export default function DonationForm() {
 
   return (
     <Stack className="donation-form">
-      {!isFormVisible && (
-        <Button variant="outlined" onClick={() => setIsFormVisible(true)}>
+        <Button variant="outlined" onClick={handleOpenForm}>
           Додати новий збір
         </Button>
-      )}
-      {isFormVisible && (
-        <form name="create-donation" onSubmit={handleSubmit}>
-          <TextField
-            required
-            id="outlined-basic"
-            label="Ваше імʼя (або імʼя того, для кого відкривається збір)"
-            variant="outlined"
-            name="name"
-            value={formValues.firstName}
-            onChange={doUpdateField}
-          />
-          <TextField
-            required
-            id="outlined-basic"
-            label="Назва збору"
-            variant="outlined"
-            name="title"
-            value={formValues.title}
-            onChange={doUpdateField}
-          />
-          <TextField
-            required
-            id="outlined-basic"
-            label="Необхідна сума"
-            variant="outlined"
-            name="amount"
-            onChange={doUpdateField}
-            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-          />
-          <TextField
-            required
-            id="outlined-basic"
-            label="Опис збору"
-            variant="outlined"
-            name="description"
-            value={formValues.description}
-            onChange={doUpdateField}
-          />
-          <Button variant="contained" type="submit">
-            Додати
-          </Button>
-        </form>
-      )}
+          <Modal
+            open={openForm}
+            onClose={handleCloseForm}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+          <Box sx={style}>
+            <form name="create-donation" onSubmit={handleSubmit}>
+              <TextField
+                required
+                id="outlined-basic"
+                label="Ваше імʼя (або імʼя того, для кого відкривається збір)"
+                variant="outlined"
+                name="name"
+                value={formValues.firstName}
+                onChange={doUpdateField}
+              />
+              <TextField
+                required
+                id="outlined-basic"
+                label="Назва збору"
+                variant="outlined"
+                name="title"
+                value={formValues.title}
+                onChange={doUpdateField}
+              />
+              <TextField
+                required
+                id="outlined-basic"
+                label="Необхідна сума"
+                variant="outlined"
+                name="amount"
+                onChange={doUpdateField}
+                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+              />
+              <TextField
+                required
+                id="outlined-basic"
+                label="Опис збору"
+                variant="outlined"
+                name="description"
+                value={formValues.description}
+                onChange={doUpdateField}
+              />
+              <Button variant="contained" type="submit">
+                Додати
+              </Button>
+            </form>
+        </Box>
+      </Modal>
 
       <Modal
         open={open}
@@ -113,12 +121,12 @@ export default function DonationForm() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-      <Box sx={style}>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        Збір успішно створено!
-      </Typography>
-      </Box>
-    </Modal>
+          <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Збір успішно створено!
+              </Typography>
+          </Box>
+          </Modal>
     </Stack>
   );
 }
