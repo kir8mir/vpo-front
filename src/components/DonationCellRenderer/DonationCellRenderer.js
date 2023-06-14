@@ -24,7 +24,8 @@ export default function DontaionCellRenderer( params ) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const donationInput = useRef();
-  const id = params.valueFormatted ? params.valueFormatted : params.value;
+  const id = params.data.id;
+  console.log('params', params.data.id);
   const donationCallback = () => {
       let amount = Number(donationInput.current.querySelector("input").value);
       makeDonation(id, {value: amount});
