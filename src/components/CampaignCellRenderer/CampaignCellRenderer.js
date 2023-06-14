@@ -103,7 +103,6 @@ export default function CampaignCellRenderer(params) {
               <Button
                 variant="outlined"
                 onClick={() => {
-                  navigator.clipboard.writeText(params.data.email);
                   const mailtoLink = `mailto:${params.data.email}`;
                   window.location.href = mailtoLink;
                 }}
@@ -113,7 +112,6 @@ export default function CampaignCellRenderer(params) {
               <Button
                 variant="outlined"
                 onClick={() => {
-                  navigator.clipboard.writeText(params.data.phone);
                   const phoneLink = `tel:${params.data.phone}`;
                   window.location.href = phoneLink;
                 }}
