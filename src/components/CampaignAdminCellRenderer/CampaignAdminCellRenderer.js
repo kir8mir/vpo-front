@@ -40,6 +40,10 @@ export default function CampaignAdminCellRenderer( params ) {
   const createdAtYear = createdAt.getFullYear();
     const createdAtMonth = createdAt.getMonth() + 1;
     const createdAtDay = createdAt.getDate();
+    const createdAtDonation = new Date(currentDonation.created_at);
+    const createdAtYearDonation = createdAtDonation.getFullYear();
+      const createdAtMonthDonation = createdAtDonation.getMonth() + 1;
+      const createdAtDayDonation = createdAtDonation.getDate();
 
   const imageId = params.data.images ? params.data.images[0] : '';
 
@@ -110,22 +114,22 @@ export default function CampaignAdminCellRenderer( params ) {
                     </Typography>
 
                       <Typography>
-                        Імʼя виконавця збору: {params.data.name}
+                        Імʼя виконавця збору: {currentDonation.name}
                       </Typography>
                       <Typography>
-                        Назва: {params.data.title}
+                        Назва: {currentDonation.title}
                       </Typography>
                       <Typography>
                         Дата створення: {`${createdAtDay}/${createdAtMonth}/${createdAtYear}`}
                       </Typography>
                       <Typography>
-                        Сума збору: {params.data.amount}UAH
+                        Сума збору: {currentDonation.amount}UAH
                       </Typography>
                       <Typography>
-                        Вже зібрано: {params.data.value}UAH
+                        Вже зібрано: {currentDonation.value}UAH
                       </Typography>
                       <Typography>
-                        Статус: {params.data.status}
+                        Статус: {currentDonation.status}
                       </Typography>
                     </>
                 )}

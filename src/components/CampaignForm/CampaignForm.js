@@ -35,6 +35,7 @@ export default function CampaignForm() {
   const [imagesData, setImagesData] = useState(new FormData());
 
   const isDonationAddedRef = useRef();
+const formRef = useRef();
 
   const style = {
     position: 'absolute',
@@ -59,13 +60,26 @@ export default function CampaignForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const donation = await createDonation(formValuesDonate);
-    setFormValues(donation);
-    const campaign = await createCampaign({...formValues, donations: [donation.id]});
-
-    if(imagesData.image){
-        sendCampaignImage(imagesData.append('campaignId', campaign.id));
+    if(isDonationAdded) {
+        const donation = await createDonation(formValuesDonate);
+        setFormValues(donation);
+        const campaign = await createCampaign({...formValues, donations: [donation.id]});
+        if(imagesData.get('image')){
+            var form = new FormData(imagesData);
+            form.append('campaignId', campaign.id);
+            setImagesData(new FormData(form));
+            sendCampaignImage(imagesData);
+        }
+    } else {
+        const campaign = await createCampaign(formValues);
+        if(imagesData.get('image')){
+            var form = new FormData();
+            form.append('image', imagesData.get('image'));
+            form.append('campaignId', campaign.id);
+            sendCampaignImage(form);
+        }
     }
+
     setIsFormVisible(false);
     setOpen(true);
   };
@@ -98,6 +112,7 @@ export default function CampaignForm() {
         const formData = new FormData();
         formData.append('image', file);
         setImagesData(formData);
+        console.log(imagesData);
     };
 
   return (
@@ -112,7 +127,7 @@ export default function CampaignForm() {
         aria-describedby="modal-modal-description"
       >
       <Box sx={style}>
-        <form id="create-donation" onSubmit={handleSubmit}>
+        <form id="create-donation" onSubmit={handleSubmit} ref={formRef}>
           <TextField
             required
             id="outlined-basic"
