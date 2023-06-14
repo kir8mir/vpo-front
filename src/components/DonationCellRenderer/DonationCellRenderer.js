@@ -22,13 +22,37 @@ const style = {
 };
 
 export default function DontaionCellRenderer( params ) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openDonateModal, setOpenDonateModal] = useState(false);
+  const handleCloseDonateModal = () => setOpenDonateModal(false);
+  const handleOpenDonateModal = () => {
+      handleCloseDescriptionModal();
+      handleCloseOptionsModal();
+      setOpenDonateModal(true);
+  }
+
+  const [openDescriptionModal, setOpenDescriptionModal] = useState(false);
+  const handleCloseDescriptionModal = () => setOpenDescriptionModal(false);
+  const handleOpenDescriptionModal = () => {
+      handleCloseDonateModal();
+      setOpenDescriptionModal(true);
+  }
+
+  const [openOptionsModal, setOpenOptionsModal] = useState(false);
+  const handleCloseOptionsModal = () => setOpenOptionsModal(false);
+  const handleOpenOptionsModal = () => {
+      handleCloseDescriptionModal();
+      handleCloseDonateModal();
+      setOpenOptionsModal(true);
+  }
+
   const donationInput = useRef();
   const [currentDonation, setCurrentDonation] = useState({});
-  const id = params.valueFormatted ? params.data.id : '';
-  console.log(params.data);
+  const id = params.valueFormatted ? params.valueFormatted : params.data.id;
+
+  const createdAt = new Date(params.data.created_at);
+  const createdAtYear = createdAt.getFullYear();
+  const createdAtMonth = createdAt.getMonth() + 1;
+  const createdAtDay = createdAt.getDate();
 
   useEffect(() => {
     (async () => {
@@ -49,24 +73,74 @@ export default function DontaionCellRenderer( params ) {
       <meta property="og:description" content={currentDonation.description} />
     </Helmet>
     <Stack className="donation-cell">
-        <Button variant="outlined" onClick={handleOpen}>Donate!</Button>
+        <Button variant="outlined" onClick={handleOpenOptionsModal}>Опції</Button>
+
         <Modal
-          open={open}
-          onClose={handleClose}
+          open={openOptionsModal}
+          onClose={handleCloseOptionsModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Enter Donation Amount
+              Опції:
             </Typography>
-            <TextField id="outlined-basic" label="Donation Value" variant="outlined" ref={donationInput} />
-            <Button variant="outlined" onClick={donationCallback}>Donate!</Button>
+            <Button variant="outlined" onClick={handleOpenDescriptionModal}>Подивитися інфо збору</Button>
+            {params.data.status !== 'closed' && (<Button variant="outlined" onClick={handleOpenDonateModal}>Задонатити</Button>)}
+            </Box>
+        </Modal>
+        <Modal
+          open={openDescriptionModal}
+          onClose={handleCloseDescriptionModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Інфо збору:
+            </Typography>
+
+              <Typography>
+                Імʼя виконавця збору: {params.data.name}
+              </Typography>
+              <Typography>
+                Назва: {params.data.title}
+              </Typography>
+              <Typography>
+                Дата створення: {`${createdAtDay}/${createdAtMonth}/${createdAtYear}`}
+              </Typography>
+              <Typography>
+                Сума збору: {params.data.amount}UAH
+              </Typography>
+              <Typography>
+                Вже зібрано: {params.data.value}UAH
+              </Typography>
+              <Typography>
+                Статус: {params.data.status}
+              </Typography>
+
+                <Typography>
+                  Опис: {params.data.description}
+                </Typography>
+            </Box>
+        </Modal>
+        <Modal
+          open={openDonateModal}
+          onClose={handleCloseDonateModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Скільки ви б хотіли задонатити?
+            </Typography>
+            <TextField id="outlined-basic" label="Сума донату" variant="outlined" ref={donationInput} />
+            <Button variant="outlined" onClick={donationCallback}>Задонатити</Button>
             <Button variant="outlined" onClick={() => {
               navigator.clipboard.writeText(
                 `http://89.40.2.236:3031/wannadonate/${id}`
               );
-          }}>Copy Link</Button>
+          }}>Скопіювати посилання на збір</Button>
           </Box>
         </Modal>
     </Stack>

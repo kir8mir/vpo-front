@@ -65,10 +65,10 @@ const formRef = useRef();
         setFormValues(donation);
         const campaign = await createCampaign({...formValues, donations: [donation.id]});
         if(imagesData.get('image')){
-            var form = new FormData(imagesData);
+            var form = new FormData();
+            form.append('image', imagesData.get('image'));
             form.append('campaignId', campaign.id);
-            setImagesData(new FormData(form));
-            sendCampaignImage(imagesData);
+            sendCampaignImage(form);
         }
     } else {
         const campaign = await createCampaign(formValues);
@@ -112,7 +112,6 @@ const formRef = useRef();
         const formData = new FormData();
         formData.append('image', file);
         setImagesData(formData);
-        console.log(imagesData);
     };
 
   return (

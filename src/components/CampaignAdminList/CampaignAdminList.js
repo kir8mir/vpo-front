@@ -15,10 +15,7 @@ export default function CampaignAdminList( ) {
   const [columnDefs, setColumnDefs] = useState([
     {field: 'name', filter: true},
     {field: 'title', filter: true},
-    {field: 'amount', filter: true},
     {field: 'status', filter: true},
-    {field: 'value', filter: true},
-    {field: 'status', filter: true, hide: true},
     {field: 'custom', cellRenderer: CampaignAdminCellRenderer, cellRendererParams: {handleUpdate} }
     ]);
   const [gridApi, setGridApi] = useState(null);

@@ -57,7 +57,7 @@ export default function AdminMain() {
             }}
           >
           <Typography variant="h4" >
-              Пожертвування
+              Збори
           </Typography>
           <DonationAdminList />
         </Stack>

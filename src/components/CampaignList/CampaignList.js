@@ -16,8 +16,6 @@ export default function CampaignList() {
   const [columnDefs, setColumnDefs] = useState([
     {field: 'name', filter: true},
     {field: 'title', filter: true},
-    {field: 'amount', filter: true},
-    {field: 'value', filter: true},
     {field: 'status', filter: true, hide: true},
     {field: 'description'},
     {field: 'custom', cellRenderer: CampaignCellRenderer, cellRendererParams: {handleUpdate} }

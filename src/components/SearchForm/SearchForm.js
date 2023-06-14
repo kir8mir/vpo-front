@@ -13,9 +13,11 @@ export default function SearchForm(  ) {
     const [searchUpdate, setSearchUpdate] = useState(false);
     const handleUpdate = () => setSearchUpdate(true);
     const handleEndUpdate = () => setSearchUpdate(false);
-    const searchRef = useRef();
+
     const [gridApi, setGridApi] = useState(null);
-    const gridWrapperRef = useRef();
+    const searchRef = useRef(null);
+    const searchButton = useRef(null);
+    const gridWrapperRef = useRef(null);
     const [columnDefs, setColumnDefs] = useState([
       {field: 'name', filter: true},
       {field: 'title', filter: true},
@@ -31,6 +33,7 @@ export default function SearchForm(  ) {
           const campaingList = await getAllCampaigns();
           setSearchList([...donationList, ...campaingList]);
           if(gridApi) {
+              gridApi.setQuickFilter(chosenSearch);
             gridApi.paginationGoToPage(0);
           }
         })();
@@ -54,6 +57,10 @@ export default function SearchForm(  ) {
 
     function onSearchChange(e) {
       handleUpdate();
+      setTimeout(() => {
+          searchButton.current.click();
+      }, 1000)
+
       if(gridApi) {
           gridApi.setQuickFilter(chosenSearch);
       }
@@ -88,10 +95,10 @@ export default function SearchForm(  ) {
                   ref={searchRef}
                   onChange={onFilterTextBoxChanged}
                 />
-                <Button variant="outlined" onClick={onSearchChange}>Пошук</Button>
+                <Button variant="outlined" onClick={onSearchChange} ref={searchButton}>Пошук</Button>
               </Stack>
 
-              {(searchList.length > 0 && searchUpdate) && (
+              {searchList && searchList.length > 0 && searchUpdate && (
                   <div ref={gridWrapperRef} className="ag-theme-alpine">
                       <AgGridReact
                           rowData={searchList}

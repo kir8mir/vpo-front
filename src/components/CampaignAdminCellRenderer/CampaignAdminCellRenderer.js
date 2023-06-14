@@ -120,7 +120,7 @@ export default function CampaignAdminCellRenderer( params ) {
                         Назва: {currentDonation.title}
                       </Typography>
                       <Typography>
-                        Дата створення: {`${createdAtDay}/${createdAtMonth}/${createdAtYear}`}
+                        Дата створення: {`${createdAtDayDonation}/${createdAtMonthDonation}/${createdAtYearDonation}`}
                       </Typography>
                       <Typography>
                         Сума збору: {currentDonation.amount}UAH
