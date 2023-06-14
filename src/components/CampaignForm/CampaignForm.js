@@ -62,8 +62,10 @@ export default function CampaignForm() {
     const donation = await createDonation(formValuesDonate);
     setFormValues(donation);
     const campaign = await createCampaign({...formValues, donations: [donation.id]});
-    
-    // sendCampaignImage(imagesData.append('campaignId', campaign.id));
+
+    if(imagesData.image){
+        sendCampaignImage(imagesData.append('campaignId', campaign.id));
+    }
     setIsFormVisible(false);
     setOpen(true);
   };
