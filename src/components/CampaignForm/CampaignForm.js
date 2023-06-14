@@ -61,9 +61,9 @@ export default function CampaignForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const donation = await createDonation(formValuesDonate);
-    setFormValues({...formValues, donations: [donation.is]});
+    setFormValues(donation);
     const campaign = await createCampaign(formValues);
-    sendCampaignImage(imagesData.append('campaignId', campaign.id));
+    // sendCampaignImage(imagesData.append('campaignId', campaign.id));
     setIsFormVisible(false);
     setOpen(true);
   };
