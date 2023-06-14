@@ -61,10 +61,11 @@ export default function CampaignCellRenderer(params) {
     })();
   }, []);
 
-  const donationCallback = () => {
+  const donationCallback = async () => {
     let amount = Number(donationInput.current.querySelector("input").value);
-    makeDonation(currentDonation.id, { value: amount });
+    await makeDonation(currentDonation.id, { value: amount });
     params.handleUpdate();
+    window.location.reload();
   };
 
   return (
