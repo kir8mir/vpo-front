@@ -99,7 +99,7 @@ export default function DontaionCellRenderer( params ) {
                 <Button variant="outlined" onClick={donationCallback}>Задонатити</Button>
                 <Button variant="outlined" onClick={() => {
                   navigator.clipboard.writeText(
-                    `http://89.40.2.236:3013/wannadonate/${id}`
+                    `https://vpo.tazasho.shop/wannadonate/${id}`
                   );
               }}>Скопіювати посилання на збір</Button>
             </Box>

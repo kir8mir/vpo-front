@@ -124,7 +124,7 @@ export default function CampaignCellRenderer(params) {
               <Typography>Опис: {params.data.description}</Typography>
               {imageId && (
                 <img
-                  src={`http://89.40.2.236:3031/campaign/upload/${imageId}`}
+                  src={`https://vpo.tazasho.shop/campaign/upload/${imageId}`}
                 />
               )}
 
@@ -180,7 +180,7 @@ export default function CampaignCellRenderer(params) {
                         navigator.clipboard.writeText
                       ) {
                         navigator.clipboard.writeText(
-                          `http://89.40.2.236:3013/wannadonate/${id}`
+                          `https://vpo.tazasho.shop/wannadonate/${id}`
                         );
                       }
                     }}
