@@ -12,7 +12,6 @@ export default function CampaignForm() {
   const handleCloseForm = () => setOpenForm(false);
   const handleOpenForm = () => setOpenForm(true);
     const [isDonationAdded, setIsDonationAdded] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
@@ -63,7 +62,9 @@ export default function CampaignForm() {
     const donation = await createDonation(formValuesDonate);
     setFormValues({...formValues, donations: [donation.is]});
     const campaign = await createCampaign(formValues);
-    sendCampaignImage(imagesData.append('campaignId', campaign.id));
+    if(imagesData.image){
+        sendCampaignImage(imagesData.append('campaignId', campaign.id));
+    }
     setIsFormVisible(false);
     setOpen(true);
   };
