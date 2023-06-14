@@ -1,3 +1,7 @@
-.ag-grid {
+.ag-body-clipper {
   height: 55vh;
+}
+
+.App {
+  height: 100vh;
 }
