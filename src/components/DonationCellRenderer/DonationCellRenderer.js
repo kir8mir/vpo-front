@@ -52,6 +52,10 @@ export default function DontaionCellRenderer( params ) {
 
   return (
       <>
+    <Helmet>
+      <meta property="og:title" content={currentDonation.title} />
+      <meta property="og:description" content={currentDonation.description} />
+    </Helmet>
     <Stack className="donation-cell">
         <Button variant="outlined" onClick={handleOpenOptionsModal}>Інфо</Button>
 
