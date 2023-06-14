@@ -1,19 +1,22 @@
 import { Stack, Button, TextField, Modal, Typography, Box } from "@mui/material";
 import createCampaign from "../../utils/createCampaign";
+import sendCampaignImage from "../../utils/sendCampaignImage";
 import { useEffect, useState, useRef } from "react";
 
 export default function CampaignForm() {
   const [campaignList, setCampaignList] = useState([]);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
+  const [imageUrl, setImageUrl] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     title: "",
-    amount: 0,
-    value: 0,
+    email: "",
+    phone: "",
     status: "pending",
     description: "",
+    donations: []
   });
 
   const style = {
@@ -32,6 +35,7 @@ export default function CampaignForm() {
     alignItems: 'stretch',
     textAlign: 'center'
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,6 +59,14 @@ export default function CampaignForm() {
         });
     }
   };
+
+    const doUploadImage = (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('campaignId', 1);
+        sendCampaignImage(formData);
+    };
 
   return (
     <Stack className="donation-form">
@@ -101,6 +113,10 @@ export default function CampaignForm() {
             value={formValues.description}
             onChange={doUpdateField}
           />
+          <Button variant="contained" component="label">
+            Завантажити зображення
+            <input accept="image/*" multiple type="file" onChange={doUploadImage} />
+          </Button>
           <Button variant="contained" type="submit">
             Додати
           </Button>
@@ -113,12 +129,12 @@ export default function CampaignForm() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-      <Box sx={style}>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        Кампанію успішно створено!
-      </Typography>
-      </Box>
-    </Modal>
+          <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Кампанію успішно створено!
+              </Typography>
+          </Box>
+        </Modal>
     </Stack>
   );
 }

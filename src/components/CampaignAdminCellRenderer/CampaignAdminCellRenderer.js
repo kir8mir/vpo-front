@@ -1,6 +1,7 @@
 import { Stack, Button, TextField, Typography, Modal, Box } from "@mui/material";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import changeCampaignStatus from "../../utils/changeCampaignStatus";
+import getCampaignImage from "../../utils/getCampaignImage";
 import deleteCampaign from "../../utils/deleteCampaign";
 
 const style = {
@@ -29,6 +30,11 @@ export default function CampaignAdminCellRenderer( params ) {
     const handleOpenOptions = () => setOpenOptions(true);
   const id = params.valueFormatted ? params.valueFormatted : params.data.id;
   const status = params.valueFormatted ? params.valueFormatted : params.data.status;
+  const createdAt = new Date(params.data.created_at);
+  const createdAtYear = createdAt.getFullYear();
+    const createdAtMonth = createdAt.getMonth() + 1;
+    const createdAtDay = createdAt.getDate();
+  const imageId = params.data.images ? params.data.images[0] : '';
 
   const campaignActivateCallback = id => {
       changeCampaignStatus(id);
@@ -57,9 +63,30 @@ export default function CampaignAdminCellRenderer( params ) {
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Опис кампанії:
             </Typography>
+
               <Typography>
-                {params.data.description}
+                Імʼя виконавця збору: {params.data.name}
               </Typography>
+              <Typography>
+                Назва: {params.data.title}
+              </Typography>
+              <Typography>
+                Дата створення: {`${createdAtDay}/${createdAtMonth}/${createdAtYear}`}
+              </Typography>
+              <Typography>
+                Сума збору: {params.data.amount}UAH
+              </Typography>
+              <Typography>
+                Вже зібрано: {params.data.value}UAH
+              </Typography>
+              <Typography>
+                Статус: {params.data.status}
+              </Typography>
+
+                <Typography>
+                  Опис: {params.data.description}
+                </Typography>
+                {imageId && (<img src={`http://89.40.2.236:3031/campaign/upload/${imageId}`} />)}
             </Box>
         </Modal>
         <Modal

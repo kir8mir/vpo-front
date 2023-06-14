@@ -30,6 +30,10 @@ export default function DonationAdminCellRenderer( params ) {
   const donationInput = useRef();
   const id = params.valueFormatted ? params.valueFormatted : params.data.id;
   const status = params.valueFormatted ? params.valueFormatted : params.data.status;
+  const createdAt = new Date(params.data.created_at);
+  const createdAtYear = createdAt.getFullYear();
+    const createdAtMonth = createdAt.getMonth() + 1;
+    const createdAtDay = createdAt.getDate();
 
   const donationActivateCallback = id => {
       changeDonationStatus(id);
@@ -66,7 +70,7 @@ export default function DonationAdminCellRenderer( params ) {
                 Назва: {params.data.title}
               </Typography>
               <Typography>
-                Дата створення: {params.data.createdAt}
+                Дата створення: {`${createdAtDay}/${createdAtMonth}/${createdAtYear}`}
               </Typography>
               <Typography>
                 Сума збору: {params.data.amount}UAH
