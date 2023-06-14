@@ -10,3 +10,8 @@
     flex-direction: column;
     gap: 5px;
 }
+#create-donation {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

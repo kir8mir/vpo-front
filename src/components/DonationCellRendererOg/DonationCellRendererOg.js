@@ -91,7 +91,7 @@ export default function DontaionCellRendererOg(props) {
               variant="outlined"
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `http://localhost:3000/wannadonate/${id}`
+                  `http://89.40.2.236:3031/wannadonate/${id}`
                 );
               }}
             >

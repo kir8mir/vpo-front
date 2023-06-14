@@ -22,7 +22,6 @@ export default function SearchForm(  ) {
       {field: 'amount', filter: true},
       {field: 'status', filter: true},
       {field: 'value', filter: true},
-      {field: 'status', filter: true},
       {field: 'description', filter: true }
       ]);
 

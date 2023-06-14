@@ -1,6 +1,8 @@
 import { Stack, Button, TextField, Typography, Modal, Box } from "@mui/material";
-import { useState, useRef } from "react";
+import { useState, useRef, useParams, useEffect } from "react";
 import makeDonation from "../../utils/makeDonation";
+import { Helmet } from "react-helmet";
+import getOneDontaion from "../../utils/getOneDontaion";
 
 const style = {
   position: 'absolute',
@@ -24,7 +26,16 @@ export default function DontaionCellRenderer( params ) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const donationInput = useRef();
-  const id = params.valueFormatted ? params.valueFormatted : params.value;
+  const [currentDonation, setCurrentDonation] = useState({});
+  const id = params.valueFormatted ? params.data.id : '';
+  console.log(params.data);
+
+  useEffect(() => {
+    (async () => {
+      setCurrentDonation(await getOneDontaion(id));
+    })();
+  }, []);
+
   const donationCallback = () => {
       let amount = Number(donationInput.current.querySelector("input").value);
       makeDonation(id, {value: amount});
@@ -32,6 +43,11 @@ export default function DontaionCellRenderer( params ) {
   }
 
   return (
+      <>
+    <Helmet>
+      <meta property="og:title" content={currentDonation.title} />
+      <meta property="og:description" content={currentDonation.description} />
+    </Helmet>
     <Stack className="donation-cell">
         <Button variant="outlined" onClick={handleOpen}>Donate!</Button>
         <Modal
@@ -46,9 +62,14 @@ export default function DontaionCellRenderer( params ) {
             </Typography>
             <TextField id="outlined-basic" label="Donation Value" variant="outlined" ref={donationInput} />
             <Button variant="outlined" onClick={donationCallback}>Donate!</Button>
-            <Button variant="outlined" onClick={() => {navigator.clipboard.writeText(`http://localhost:3000/wannadonate/${id}`)}}>Copy Link</Button>
+            <Button variant="outlined" onClick={() => {
+              navigator.clipboard.writeText(
+                `http://89.40.2.236:3031/wannadonate/${id}`
+              );
+          }}>Copy Link</Button>
           </Box>
         </Modal>
     </Stack>
+    </>
   );
 }

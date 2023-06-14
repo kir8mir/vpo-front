@@ -1,5 +1,6 @@
-import { Stack, Button, TextField, Modal, Typography, Box } from "@mui/material";
+import { Stack, Button, TextField, Modal, Typography, Box, Switch, FormGroup, FormControlLabel } from "@mui/material";
 import createCampaign from "../../utils/createCampaign";
+import createDonation from "../../utils/createDonation";
 import sendCampaignImage from "../../utils/sendCampaignImage";
 import { useEffect, useState, useRef } from "react";
 
@@ -7,6 +8,10 @@ export default function CampaignForm() {
   const [campaignList, setCampaignList] = useState([]);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
+  const [openForm, setOpenForm] = useState(false);
+  const handleCloseForm = () => setOpenForm(false);
+  const handleOpenForm = () => setOpenForm(true);
+    const [isDonationAdded, setIsDonationAdded] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -18,6 +23,19 @@ export default function CampaignForm() {
     description: "",
     donations: []
   });
+
+  const [formValuesDonate, setFormValuesDonate] = useState({
+    name: "",
+    title: "",
+    amount: 0,
+    value: 0,
+    status: "pending",
+    description: "",
+  });
+
+  const [imagesData, setImagesData] = useState(new FormData());
+
+  const isDonationAddedRef = useRef();
 
   const style = {
     position: 'absolute',
@@ -36,25 +54,38 @@ export default function CampaignForm() {
     textAlign: 'center'
   };
 
+  const handleAddDonation = (e) => {
+      setIsDonationAdded(e.target.value);
+  }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    createCampaign(formValues);
+    const donation = await createDonation(formValuesDonate);
+    setFormValues({...formValues, donations: [donation.is]});
+    const campaign = await createCampaign(formValues);
+    sendCampaignImage(imagesData.append('campaignId', campaign.id));
     setIsFormVisible(false);
     setOpen(true);
   };
 
   const doUpdateField = (e) => {
+      setFormValues({
+        ...formValues,
+        [e.target.name]: e.target.value,
+      });
+  };
+
+  const doUpdateFieldDonate = (e) => {
     switch (e.target.name) {
       case "amount":
-        setFormValues({
-          ...formValues,
+        setFormValuesDonate({
+          ...formValuesDonate,
           [e.target.name]: Number(e.target.value),
         });
         break;
       default:
-        setFormValues({
-          ...formValues,
+        setFormValuesDonate({
+          ...formValuesDonate,
           [e.target.name]: e.target.value,
         });
     }
@@ -64,19 +95,22 @@ export default function CampaignForm() {
         const file = e.target.files[0];
         const formData = new FormData();
         formData.append('image', file);
-        formData.append('campaignId', 1);
-        sendCampaignImage(formData);
+        setImagesData(formData);
     };
 
   return (
     <Stack className="donation-form">
-      {!isFormVisible && (
-        <Button variant="outlined" onClick={() => setIsFormVisible(true)}>
+        <Button variant="outlined" onClick={handleOpenForm}>
           Додати нову кампанію
         </Button>
-      )}
-      {isFormVisible && (
-        <form name="create-donation" onSubmit={handleSubmit}>
+      <Modal
+        open={openForm}
+        onClose={handleCloseForm}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+      <Box sx={style}>
+        <form id="create-donation" onSubmit={handleSubmit}>
           <TextField
             required
             id="outlined-basic"
@@ -98,9 +132,19 @@ export default function CampaignForm() {
           <TextField
             required
             id="outlined-basic"
-            label="Необхідна сума"
+            label="Email"
             variant="outlined"
-            name="amount"
+            name="email"
+            value={formValues.email}
+            onChange={doUpdateField}
+          />
+          <TextField
+            required
+            id="outlined-basic"
+            label="Телефон"
+            variant="outlined"
+            name="phone"
+            value={formValues.phone}
             onChange={doUpdateField}
             inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
           />
@@ -113,15 +157,59 @@ export default function CampaignForm() {
             value={formValues.description}
             onChange={doUpdateField}
           />
+          <FormGroup>
+              <FormControlLabel control={<Switch ref={isDonationAddedRef} onChange={handleAddDonation}/>} label="Додати Збір" />
+          </FormGroup>
+          {isDonationAdded && (
+              <>
+                <TextField
+                  required
+                  id="outlined-basic"
+                  label="Ваше імʼя (або імʼя того, для кого відкривається збір)"
+                  variant="outlined"
+                  name="name"
+                  value={formValuesDonate.firstName}
+                  onChange={doUpdateFieldDonate}
+                />
+                <TextField
+                  required
+                  id="outlined-basic"
+                  label="Назва збору"
+                  variant="outlined"
+                  name="title"
+                  value={formValuesDonate.title}
+                  onChange={doUpdateFieldDonate}
+                />
+                <TextField
+                  required
+                  id="outlined-basic"
+                  label="Необхідна сума"
+                  variant="outlined"
+                  name="amount"
+                  onChange={doUpdateFieldDonate}
+                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                />
+                <TextField
+                  required
+                  id="outlined-basic"
+                  label="Опис збору"
+                  variant="outlined"
+                  name="description"
+                  value={formValuesDonate.description}
+                  onChange={doUpdateFieldDonate}
+                />
+            </>
+          )}
           <Button variant="contained" component="label">
             Завантажити зображення
-            <input accept="image/*" multiple type="file" onChange={doUploadImage} />
+            <input hidden accept="image/*" multiple type="file" onChange={doUploadImage} />
           </Button>
           <Button variant="contained" type="submit">
             Додати
           </Button>
         </form>
-      )}
+        </Box>
+        </Modal>
 
       <Modal
         open={open}

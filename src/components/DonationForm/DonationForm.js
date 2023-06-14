@@ -71,7 +71,7 @@ export default function DonationForm() {
             aria-describedby="modal-modal-description"
           >
           <Box sx={style}>
-            <form name="create-donation" onSubmit={handleSubmit}>
+            <form id="create-donation" onSubmit={handleSubmit}>
               <TextField
                 required
                 id="outlined-basic"
