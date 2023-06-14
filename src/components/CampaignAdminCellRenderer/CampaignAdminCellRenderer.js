@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import changeCampaignStatus from "../../utils/changeCampaignStatus";
 import getCampaignImage from "../../utils/getCampaignImage";
 import deleteCampaign from "../../utils/deleteCampaign";
+import getOneDontaion from "../../utils/getOneDontaion";
 
 const style = {
   position: 'absolute',
@@ -25,16 +26,30 @@ export default function CampaignAdminCellRenderer( params ) {
   const [openDescription, setOpenDescription] = useState(false);
   const handleCloseDescription = () => setOpenDescription(false);
   const handleOpenDescription = () => setOpenDescription(true);
+
     const [openOptions, setOpenOptions] = useState(false);
     const handleCloseOptions = () => setOpenOptions(false);
     const handleOpenOptions = () => setOpenOptions(true);
+
+    const [currentDonation, setCurrentDonation] = useState({});
+    const donationId = params.valueFormatted ? params.valueFormatted : params.data.donations[0];
+
   const id = params.valueFormatted ? params.valueFormatted : params.data.id;
   const status = params.valueFormatted ? params.valueFormatted : params.data.status;
   const createdAt = new Date(params.data.created_at);
   const createdAtYear = createdAt.getFullYear();
     const createdAtMonth = createdAt.getMonth() + 1;
     const createdAtDay = createdAt.getDate();
+
   const imageId = params.data.images ? params.data.images[0] : '';
+
+    useEffect(() => {
+      (async () => {
+        if(donationId && donationId != ''){
+            setCurrentDonation(await getOneDontaion(donationId));
+        }
+      })();
+    }, []);
 
   const campaignActivateCallback = id => {
       changeCampaignStatus(id);
@@ -65,7 +80,7 @@ export default function CampaignAdminCellRenderer( params ) {
             </Typography>
 
               <Typography>
-                Імʼя виконавця збору: {params.data.name}
+                Імʼя виконавця кампанії: {params.data.name}
               </Typography>
               <Typography>
                 Назва: {params.data.title}
@@ -74,10 +89,10 @@ export default function CampaignAdminCellRenderer( params ) {
                 Дата створення: {`${createdAtDay}/${createdAtMonth}/${createdAtYear}`}
               </Typography>
               <Typography>
-                Сума збору: {params.data.amount}UAH
+                Email: {params.data.email}
               </Typography>
               <Typography>
-                Вже зібрано: {params.data.value}UAH
+                Телефон: {params.data.phone}
               </Typography>
               <Typography>
                 Статус: {params.data.status}
@@ -87,6 +102,33 @@ export default function CampaignAdminCellRenderer( params ) {
                   Опис: {params.data.description}
                 </Typography>
                 {imageId && (<img src={`http://89.40.2.236:3031/campaign/upload/${imageId}`} />)}
+
+                {donationId && donationId !== '' && (
+                    <>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                      Збір до даної кампанії:
+                    </Typography>
+
+                      <Typography>
+                        Імʼя виконавця збору: {params.data.name}
+                      </Typography>
+                      <Typography>
+                        Назва: {params.data.title}
+                      </Typography>
+                      <Typography>
+                        Дата створення: {`${createdAtDay}/${createdAtMonth}/${createdAtYear}`}
+                      </Typography>
+                      <Typography>
+                        Сума збору: {params.data.amount}UAH
+                      </Typography>
+                      <Typography>
+                        Вже зібрано: {params.data.value}UAH
+                      </Typography>
+                      <Typography>
+                        Статус: {params.data.status}
+                      </Typography>
+                    </>
+                )}
             </Box>
         </Modal>
         <Modal
