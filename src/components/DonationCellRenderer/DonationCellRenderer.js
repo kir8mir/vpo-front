@@ -64,6 +64,7 @@ export default function DontaionCellRenderer( params ) {
           onClose={handleCloseOptionsModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
+          className="campaignModal"
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
