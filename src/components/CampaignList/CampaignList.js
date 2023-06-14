@@ -9,7 +9,7 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import CampaignCellRenderer from "../CampaignCellRenderer/CampaignCellRenderer";
 import getAllCampaigns from "../../utils/getAllCampaigns";
 import { useEffect, useState, useRef } from "react";
-
+import './index.css';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
