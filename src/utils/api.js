@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://vpo.tazasho.shop'
+const baseURL = 'http://89.40.2.236:3031/'
 
 export const api = axios.create({
   baseURL,
